@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo by Harikirat</title>
+
+    <script>
+        let globalId = 1;
+        let todoState = [];
+
+        function markAsDone(todoId){
+            const parent = document.getElementById(todoId);
+            parent.children[2].innerHTML = "Done!"
+        }
+
+        function createChild(title, description, id){
+            const child = document.createElement("div");
+            const firstGrandChild = document.createElement("div");
+            firstGrandChild.innerHTML = title;
+            const secondGrandChild = document.createElement("div");
+            secondGrandChild.innerHTML = description;
+            const thirdGrandChild = document.createElement("button");
+            thirdGrandChild.innerHTML = "Mark as Done";
+
+            thirdGrandChild.setAttribute("onclick", `markAsDone(${id})`);
+
+            child.appendChild(firstGrandChild);
+            child.appendChild(secondGrandChild);
+            child.appendChild(thirdGrandChild);
+            child.setAttribute("id", id);
+            return child;
+        }
+
+        function updateState(newTodos){
+            const parent = document.getElementById("todos");
+            parent.innerHTML = "";
+
+           newTodos.forEach(element => {
+            const title = element.title;
+            const description = element.description;
+            parent.appendChild(createChild(title,description, globalId++))
+           });
+            
+
+            // for(let i=0; i<newTodos.length; i++){
+            //     const title = newTodos[i].title;
+            //     const description = newTodos[i].description;
+            //     parent.appendChild(createChild(title, description, globalId++))
+            // }
+        }
+
+        function addTodo(){
+            const title = document.getElementById("title").value;
+            const description = document.getElementById("description").value;
+            
+            todoState.push({
+                title: title,
+                description: description,
+                id: globalId++
+            })
+            updateState(todoState);
+
+
+        }
+    </script>
+</head>
+<body>
+    
+<input type="text" id="title" placeholder="Todo title"> <br><br>
+<input type="text" id="description" placeholder="Todo description"> <br><br>
+<button onclick="addTodo()">Add Todo</button><br><br>
+
+<div id="todos"></div>
+
+</body>
+</html>
